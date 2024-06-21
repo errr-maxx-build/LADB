@@ -53,6 +53,13 @@ android {
     namespace 'com.draco.ladb'
 }
 
+// Support for build.yml
+tasks.register('printVersionName') {
+    doLast {
+        println android.defaultConfig.versionName
+    }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1-Beta'
