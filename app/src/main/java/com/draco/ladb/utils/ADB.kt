@@ -145,7 +145,12 @@ class ADB(private val context: Context) {
         }
 
         shellProcess = if (autoShell) {
-            adb(true, listOf("shell"))
+            val argList = if (Build.SUPPORTED_ABIS[0] == "arm64-v8a")
+                listOf("-t", "1", "shell")
+            else
+                listOf("shell")
+
+            adb(true, argList)
         } else {
             shell(true, listOf("sh", "-l"))
         }
@@ -215,8 +220,7 @@ class ADB(private val context: Context) {
         killShell.waitFor(3, TimeUnit.SECONDS)
         killShell.destroyForcibly()
 
-        // FIXME(tytydraco): Return true on pair because some devices might mistakenly return false here.
-        return true
+        return pairShell.exitValue() == 0
     }
 
     /**
